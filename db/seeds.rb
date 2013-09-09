@@ -8,6 +8,7 @@ end
 begin
   encrypted_password = Password.encrypt(password)
   user = User.new({name: 'admin', password: encrypted_password, admin: true})
+  user.build_subscription
   user.save!
   puts 'admin user created.'
 rescue ActiveRecord::RecordInvalid => e
