@@ -38,10 +38,18 @@ describe User, 'validations' do
   it 'should have a unique name' do
     User.new(name: users('jordan').name).should have(1).error_on(:name)
   end
+end
 
-  describe 'after initializaiton' do
-    it 'should have a subscription' do
-      User.new.subscription.should_not be_nil
-    end
+describe 'after initializaiton' do
+  it 'should have a subscription' do
+    User.new.subscription.should_not be_nil
+  end
+end
+
+describe 'before saving' do
+  it 'should encrypt the passwod' do
+    user = User.new(name: 'test', password: 'test')
+    user.save
+    user.password.should_not eq 'test'
   end
 end

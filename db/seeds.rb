@@ -6,8 +6,7 @@ unless password = ENV['password']
 end
 
 begin
-  encrypted_password = Password.encrypt(password)
-  user = User.new({name: 'admin', password: encrypted_password, admin: true})
+  user = User.new({name: 'admin', password: password, admin: true})
   user.build_subscription
   user.save!
   puts 'admin user created.'
