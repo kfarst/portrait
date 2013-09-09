@@ -1,10 +1,13 @@
+require File.expand_path(File.dirname(__FILE__) + '/../lib/password')
+
 unless password = ENV['password']
   puts "Please add a password for the admin user with 'rake db:seed password=[password]'"
   exit
 end
 
 begin
-  user = User.new({name: 'admin', password: password, admin: true})
+  encrypted_password = Password.encrypt(password)
+  user = User.new({name: 'admin', password: encrypted_password, admin: true})
   user.save!
   puts 'admin user created.'
 rescue ActiveRecord::RecordInvalid => e

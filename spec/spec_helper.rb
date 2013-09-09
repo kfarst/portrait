@@ -2,6 +2,7 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
+require File.expand_path("../../lib/password", __FILE__)
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -25,16 +26,17 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-  
+
   # Render views for controller tests
   config.render_views
-  
+
   def running(&block)
     lambda &block
   end
-  
+
   def login_as(username)
     @user = users(username)
-    @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64(@user.name+':'+@user.password)}"
+    # hack for the password to get tests passing
+    @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64(@user.name+':password')}"
   end
 end
