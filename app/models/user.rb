@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   end
 
   has_many :sites, :dependent=>:destroy
+  has_one :subscription, :dependent=>:destroy, :autosave=>true
 
   def to_param() name end
 

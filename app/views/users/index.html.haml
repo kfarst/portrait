@@ -14,12 +14,14 @@
     %th Name
     %th Password
     %th Sites
+    %th Transaction Limit
     %th Admin
-    
+
   - @users.each do |user|
     %tr
       %td= link_to user.name, user
       %td= user.password
       %td= number_with_delimiter user.sites.count
+      %td= user.subscription.transaction_limit
       %td= user.admin? ? 'Yes' : 'No'
-      
+

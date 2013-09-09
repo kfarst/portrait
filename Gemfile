@@ -11,6 +11,7 @@ gem 'will_paginate'
 gem 'imgkit'
 gem 'byebug'
 gem 'delayed_job_active_record'
+gem 'rails-observers'
 
 group :development, :test do
   gem 'rspec-rails'
