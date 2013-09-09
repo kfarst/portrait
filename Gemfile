@@ -10,6 +10,7 @@ gem 'state_machine'
 gem 'will_paginate'
 gem 'imgkit'
 gem 'byebug'
+gem 'delayed_job_active_record'
 
 group :development, :test do
   gem 'rspec-rails'

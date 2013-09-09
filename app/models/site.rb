@@ -38,7 +38,8 @@ class Site < ActiveRecord::Base
   #############################################################################
   #                             P R O C E S S I N G                           #
   #############################################################################
-  after_create 'process!'
+  after_create 'enqueue_process'
+
   def process!
     started!
     handle generate_png
@@ -64,6 +65,12 @@ class Site < ActiveRecord::Base
     succeeded!
   ensure
     FileUtils.rm path
+  end
+
+  private
+
+  def enqueue_process
+    self.delay.process!
   end
 
   #############################################################################
