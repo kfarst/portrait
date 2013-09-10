@@ -25,3 +25,10 @@ Background Job Processing
 
 Image creation within the request is very slow, so Delayed Job has been added to enqueue the job once a new site is created.
 In combination with the existing state machine, a user has monitor the current status of the job on page reload.
+
+------------------
+Transaction Limit
+------------------
+
+An admin now has the ability to limit the user transactions when creating a new user. After the limit has been surpassed, the
+user will no longer be able to create more site images. An admin user has unlimited transactions.
