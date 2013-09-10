@@ -35,7 +35,8 @@ RSpec.configure do |config|
   end
 
   def login_as(username)
-    @user = users(username)
+    @user = subscriptions(:basic).user
+    @user.subscription.save
     # hack for the password to get tests passing
     @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64(@user.name+':password')}"
   end

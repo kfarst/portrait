@@ -57,4 +57,19 @@ describe SitesController do
     }.should_not change(Site, :count)
   end
 
+  context 'with a non-admin user beyond the subscription transaction limit' do
+    before(:each) do
+      User.any_instance.stub(:admin? => false)
+      Subscription.any_instance.stub(:transaction_limit => 0)
+    end
+
+    it 'handles /sites with an exceeded transaction limit and POST' do
+      running {
+        post :api, url: 'http://google.com'
+        response.response_code.should == 500
+        response.body.should == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<errors>\n  <error>You have exceeded your transaction limit</error>\n</errors>\n"
+      }.should_not change(Site, :count)
+    end
+  end
+
 end

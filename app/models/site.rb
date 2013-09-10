@@ -28,6 +28,12 @@ class Site < ActiveRecord::Base
   belongs_to :user, :counter_cache=>true
 
   #############################################################################
+  #                                S C O P E S                                #
+  #############################################################################
+
+  scope :created_by_user, lambda {|id| where(user_id: id).count }
+
+  #############################################################################
   #                                   X M L                                   #
   #############################################################################
   # Used as an attribute in xml result - See SitesController#api
@@ -73,10 +79,20 @@ class Site < ActiveRecord::Base
     self.delay.process!
   end
 
+  def user_below_transaction_limit
+    if user.try(:subscription) && user_not_admin_and_below_transaction_limit?
+      errors.add(:base, "You have exceeded your transaction limit") and return false
+    end
+  end
+
+  def user_not_admin_and_below_transaction_limit?
+    !user.admin? && user.subscription.transaction_limit < Site.created_by_user(user.id)
+  end
+
   #############################################################################
   #                               V A L I D A T I O N                         #
   #############################################################################
   validates :user_id, presence: true
   validates :url, :format=>/\A((http|https):\/\/)*[a-z0-9_-]{1,}\.*[a-z0-9_-]{1,}\.[a-z]{2,5}(\/)?\S*\z/i
-
+  validate :user_below_transaction_limit
 end

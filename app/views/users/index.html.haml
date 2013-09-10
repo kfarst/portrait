@@ -22,6 +22,6 @@
       %td= link_to user.name, user
       %td= user.password
       %td= number_with_delimiter user.sites.count
-      %td= user.subscription.transaction_limit
+      %td= transaction_limit(user)
       %td= user.admin? ? 'Yes' : 'No'
 
